@@ -263,17 +263,27 @@ bool Board::check_pawn_move(Field from, Field to)
         base_move_increment = -1;
     }
 
-    if (get(to).occupied && to.row == from.row + base_move_increment)
+    if (!get(to).occupied && to.row == from.row + base_move_increment)
+    {
+        return true;
+    }
+    if (get(to).occupied && to.row == from.row + base_move_increment && (to.col == (from.col + 1) || to.col == (from.col - 1)))
     {
         return true;
     }
 
-    // for (auto x:history.get_moves()) // Check if pawn moved before
-    // {
-    //     if (x.from == from || x.to == from) // Nothing moved to or from this field
-    //     {
-    //         return {false, false, Move()};
-    //     }
-    // }
+    for (auto x:history.get_moves()) // Check if pawn moved before
+    {
+        if (!(x.from == from || x.to == from)) // Nothing moved to or from this field
+        {
+            if (!get(to).occupied && to.row == from.row + 2*base_move_increment) // Double move
+            {
+                return true;
+            }
+        }
+    }
+
+    // TODO: PROMOTION, EN PASSAINT
+    return false;
 
 }
