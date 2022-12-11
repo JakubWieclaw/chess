@@ -272,18 +272,35 @@ bool Board::check_pawn_move(Field from, Field to)
         return true;
     }
 
+    bool has_moved = false;
     for (auto x:history.get_moves()) // Check if pawn moved before
     {
-        if (!(x.from == from || x.to == from)) // Nothing moved to or from this field
+        if (x.from == from || x.to == from) // Nothing moved to or from this field
         {
-            if (!get(to).occupied && to.row == from.row + 2*base_move_increment) // Double move
-            {
-                return true;
-            }
+            has_moved = true;
+            break;
         }
     }
+    if (!has_moved && to.row == from.row + 2*base_move_increment && to.col == from.col) // double move
+    {
+        return true;
+    }
+    if (history.get_size() == 0) // en passaint impossible
+    {
+        return false;
+    }
+    Move prev_move = history.get_back_element();
+    Field prev_move_to = prev_move.to;
+    Field prev_move_from = prev_move.from;
+    if (get(prev_move_to).p.type == Piece_type::Pawn &&  prev_move_to.row == prev_move_from.row + (-2)*base_move_increment) // prev move was dobule move pawn
+    {
+        if (from.row == prev_move_to.row && abs(from.col - prev_move_to.col) == 1 && to.row == from.row + base_move_increment && to.col == prev_move_to.col) // en passaint capture
+        {
+            return true;
+        }
+    }
+    // TODO: PROMOTION
 
-    // TODO: PROMOTION, EN PASSAINT
     return false;
 
 }
