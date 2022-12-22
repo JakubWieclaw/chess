@@ -15,7 +15,7 @@ void Console_front::start_game(Board &board)
 {
     while (board.game_result() == Game_state::in_progress)
     {
-        drawer.draw_state(board.get_state());
+        drawer.draw_state(board.get_state(), board.colour_turn());
         do
         {
             Move move = input.get_move();

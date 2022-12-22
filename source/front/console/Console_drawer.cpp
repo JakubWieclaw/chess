@@ -4,12 +4,22 @@
 #include <iostream>
 #include <stdlib.h>
 
-void Console_drawer::draw_state(std::array<std::array<Field_info,8>,8> game_state)
+void Console_drawer::draw_state(std::array<std::array<Field_info,8>,8> game_state, Colour turn)
 {
     HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
     system("CLS"); // Clear screen
     SetConsoleTextAttribute(console, 15); // 15 - white
     std::cout << " abcdefgh\n";
+    if (turn == Colour::Black)
+    {
+        SetConsoleTextAttribute(console, 12);
+        std::cout << "Black move\n";
+    }
+    else
+    {
+        SetConsoleTextAttribute(console, 10);
+        std::cout << "White move\n";
+    }
     for (int i = 0; i < 8; i++)
     {
         SetConsoleTextAttribute(console, 15); // 15 - white

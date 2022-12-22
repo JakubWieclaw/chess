@@ -6,7 +6,7 @@
 class Console_drawer
 {
     public:
-    void draw_state(std::array<std::array<Field_info,8>,8> game_state);
+    void draw_state(std::array<std::array<Field_info,8>,8> game_state, Colour turn);
     private:
 
 };
