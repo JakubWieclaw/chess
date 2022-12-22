@@ -23,6 +23,7 @@ void Console_front::start_game(Board &board)
             {
                 break;
             }
+            std::cout << "Illegal move" << std::endl;
         } while (true);
         
     }

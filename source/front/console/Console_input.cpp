@@ -2,18 +2,6 @@
 #include <iostream>
 #include <string>
 
-
-
-Move Console_input::get_move()
-{
-    Field m_from = insert_move(); // Defined by from but accurate for both
-    Field m_to = insert_move();
-    Move res;
-    res.from = m_from;
-    res.to = m_to;
-    return res;
-}
-
 Field insert_move()
 {
     Field from;
@@ -40,8 +28,19 @@ Field insert_move()
         }
     }
     while(!is_correct);
-    from.row = from_text[0] - 'a';
-    from.col = from_text[1] - '1';
+    from.col = from_text[0] - 'a';
+    from.row = from_text[1] - '1';
 
     return from;
 }
+
+Move Console_input::get_move()
+{
+    Field m_from = insert_move(); // Defined by from but accurate for both
+    Field m_to = insert_move();
+    Move res;
+    res.from = m_from;
+    res.to = m_to;
+    return res;
+}
+

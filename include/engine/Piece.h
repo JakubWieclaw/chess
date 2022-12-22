@@ -5,7 +5,8 @@
 enum class Colour
 {
     White, 
-    Black
+    Black,
+    Empty
 };
 
 struct Piece

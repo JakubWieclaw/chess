@@ -7,4 +7,6 @@ int main()
     board.start("board.txt");
     Console_front front;
     front.start_game(board);
+
+    return 0;
 }

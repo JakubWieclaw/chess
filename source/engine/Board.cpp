@@ -1,5 +1,6 @@
 #include "engine/Board.h"
 #include <fstream>
+#include <tuple>
 
 Colour Board::colour_turn() // Whose turn is it - dumb, don't you think?
 {
@@ -70,6 +71,19 @@ bool checkCoord(int i)
 {
     return i >= 0 && i < 8;
 }
+
+void Board::move_piece(Move move)
+{
+
+
+    chessboard[move.to.row][move.to.col].p.type = get(move.from).p.type; // Move figure into "to" field
+    chessboard[move.to.row][move.to.col].p.colour = get(move.from).p.colour;
+    chessboard[move.to.row][move.to.col].occupied = true;
+
+    chessboard[move.from.row][move.from.col].p.type = Piece_type::None; // Empty from field
+    chessboard[move.from.row][move.from.col].p.colour = Colour::Empty;
+    chessboard[move.from.row][move.from.col].occupied = false;
+}
 bool Board::make_move(Move move) // + check if legal
 {
     Field from = move.from;
@@ -93,7 +107,7 @@ bool Board::make_move(Move move) // + check if legal
     }
 
     bool is_move_legal;
-    std::tuple<bool, bool, Move> kings_move;
+    std::tuple<bool, bool, Move> kings_move = {false, false, move};
     switch (get(from).p.type)
     {
     case Piece_type::Rook:
@@ -140,11 +154,13 @@ bool Board::make_move(Move move) // + check if legal
     else if (get(from).p.type == Piece_type::King && std::get<1>(kings_move)) // Castling
     {
         Move rook_move = std::get<2>(kings_move);
-        chessboard[rook_move.from.row][rook_move.from.col].p.type = Piece_type::None; // Empty from field
-        chessboard[rook_move.from.row][rook_move.from.col].occupied = false;
+        // chessboard[rook_move.from.row][rook_move.from.col].p.type = Piece_type::None; // Empty from field
+        // chessboard[rook_move.from.row][rook_move.from.col].occupied = false;
 
-        chessboard[rook_move.to.row][rook_move.to.col].p.type = get(from).p.type; // rook_move figure into "to" field
-        chessboard[rook_move.to.row][rook_move.to.col].occupied = true;
+        // chessboard[rook_move.to.row][rook_move.to.col].p.type = get(from).p.type; // rook_move figure into "to" field
+        // chessboard[rook_move.to.row][rook_move.to.col].occupied = true;
+
+        move_piece(rook_move);
 
     }
 
@@ -157,11 +173,13 @@ bool Board::make_move(Move move) // + check if legal
     // Check whether King was attacked, end game if yes
 
 
-    chessboard[move.from.row][move.from.col].p.type = Piece_type::None; // Empty from field
-    chessboard[move.from.row][move.from.col].occupied = false;
+    // chessboard[move.from.row][move.from.col].p.type = Piece_type::None; // Empty from field
+    // chessboard[move.from.row][move.from.col].occupied = false;
 
-    chessboard[move.to.row][move.to.col].p.type = get(from).p.type; // Move figure into "to" field
-    chessboard[move.to.row][move.to.col].occupied = true;
+    // chessboard[move.to.row][move.to.col].p.type = get(from).p.type; // Move figure into "to" field
+    // chessboard[move.to.row][move.to.col].occupied = true;
+
+    move_piece(move);
 
     history.add_move(move); // Add move to history
 
@@ -201,7 +219,7 @@ bool Board::check_rook_move(Field from, Field to)
     return true;
 }
 
-bool check_knight_move(Field from, Field to)
+bool Board::check_knight_move(Field from, Field to)
 {
     int diff_row = abs(from.row - to.row);
     int diff_col = abs(from.col - to.col);
@@ -272,7 +290,7 @@ std::tuple<bool, bool, Move> Board::check_king_move(Field from, Field to) // 0 -
     //         return false;
     //     }
     // }
-    int diff_col = from.col - to.col;
+    diff_col = from.col - to.col;
     // Field starting_rook_field = [starting_row, diff_col]() -> Field {
     //     if(diff_col > 0) {
     //         return Field{starting_row, 7};
