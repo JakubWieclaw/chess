@@ -48,6 +48,7 @@ void Board::start(std::string path)
             }
         }
     }
+    current_state = Game_state::in_progress;
     // chessboard[0][0].p.type = Piece_type::Rook;
     // chessboard[0][0].p.colour = Colour::White;
     // chessboard[0][0].occupied = true;
@@ -92,6 +93,7 @@ bool Board::make_move(Move move) // + check if legal
     }
 
     bool is_move_legal;
+    std::tuple<bool, bool, Move> kings_move;
     switch (get(from).p.type)
     {
     case Piece_type::Rook:
@@ -107,7 +109,7 @@ bool Board::make_move(Move move) // + check if legal
         is_move_legal = check_queen_move(move.from, move.to);
         break;
     case Piece_type::King:
-        std::tuple<bool, bool, Move> kings_move = check_king_move(move.from,move.to);
+        kings_move = check_king_move(move.from,move.to);
         is_move_legal = std::get<0>(kings_move);
         break;
     case Piece_type::Pawn:
@@ -120,13 +122,54 @@ bool Board::make_move(Move move) // + check if legal
     {
         return false;
     }
+
+
+
+
+    if (get(to).p.type == Piece_type::King) // Check if King was attacked
+    {
+        if (get(to).p.colour == Colour::White)
+        {
+            current_state = Game_state::black_victory;
+        }
+        else
+        {
+            current_state = Game_state::white_victory;
+        }
+    }
+    else if (get(from).p.type == Piece_type::King && std::get<1>(kings_move)) // Castling
+    {
+        Move rook_move = std::get<2>(kings_move);
+        chessboard[rook_move.from.row][rook_move.from.col].p.type = Piece_type::None; // Empty from field
+        chessboard[rook_move.from.row][rook_move.from.col].occupied = false;
+
+        chessboard[rook_move.to.row][rook_move.to.col].p.type = get(from).p.type; // rook_move figure into "to" field
+        chessboard[rook_move.to.row][rook_move.to.col].occupied = true;
+
+    }
+
+    if (get(from).p.type == Piece_type::Pawn && (get(to).f.row == 0 || get(to).f.row == 7))
+    {
+        chessboard[move.from.row][move.from.col].p.type = Piece_type::Queen; // Promote to Queen
+    }
     // Empty "From" field, replace piece in "To" field
     // Add move to moves, consider castling and pawn promotion (change piece type)
     // Check whether King was attacked, end game if yes
 
+
+    chessboard[move.from.row][move.from.col].p.type = Piece_type::None; // Empty from field
+    chessboard[move.from.row][move.from.col].occupied = false;
+
+    chessboard[move.to.row][move.to.col].p.type = get(from).p.type; // Move figure into "to" field
+    chessboard[move.to.row][move.to.col].occupied = true;
+
+    history.add_move(move); // Add move to history
+
+    return true;
 }
 Game_state Board::game_result()
 {
+    return current_state;
 }
 
 bool Board::check_rook_move(Field from, Field to)
@@ -211,7 +254,7 @@ std::tuple<bool, bool, Move> Board::check_king_move(Field from, Field to) // 0 -
 {
     int diff_row = abs(from.row - to.row);
     int diff_col = abs(from.col - to.col);
-    if (diff_row <= 1 || diff_col <= 1) // Normal move
+    if (diff_row <= 1 && diff_col <= 1) // Normal move
     {
         return {true, false, Move()};
     }
@@ -321,7 +364,6 @@ bool Board::check_pawn_move(Field from, Field to)
             return true;
         }
     }
-    // TODO: PROMOTION
 
     return false;
 }

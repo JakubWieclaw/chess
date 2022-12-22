@@ -1,14 +1,13 @@
-#pragma once
-
 #include "Move.h"
 #include <vector>
+#include "engine/History.h"
 
-class History
+
+void History::add_move(Move move)
 {
-    public:
-    void add_move(Move move);
-    std::vector<Move> get_moves();
-    private:
-    std::vector<Move> moves;
-
-};
+    moves.push_back(move);
+}
+std::vector<Move> History::get_moves()
+{
+    return moves;
+}

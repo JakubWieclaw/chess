@@ -27,4 +27,5 @@ private:
     bool check_queen_move(Field from, Field to);
     std::tuple<bool, bool, Move> check_king_move(Field from, Field to);
     bool check_pawn_move(Field from, Field to);
+    Game_state current_state;
 };
