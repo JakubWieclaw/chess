@@ -22,7 +22,7 @@ std::string utcExample()
 
 History::History()
 {
-    file_name = utcExample();
+    file_name = utcExample() + ".txt";
 }
 void History::add_move(Move move)
 {
