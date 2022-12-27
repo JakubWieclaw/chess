@@ -11,7 +11,7 @@ Field insert_move()
     {
         std::cout << "Insert field: ";
         std::cin >> from_text;
-        if (!(from_text.length() == 2))
+        if (from_text.length() != 2)
         {
             std::cout << "Wrong string length - insert move again" << std::endl;
             is_correct = false;

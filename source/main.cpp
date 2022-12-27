@@ -1,5 +1,6 @@
 #include "engine\Board.h"
 #include "front\console\Console_front.h"
+#include <fstream>
 
 int main()
 {
