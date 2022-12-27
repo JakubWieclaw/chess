@@ -21,14 +21,13 @@ Field insert_move()
             std::cout << "Lowercase letters from a to h only - insert move again" << std::endl;
             is_correct = false;
         }
-        
+
         else
         {
             is_correct = true;
         }
-    }
-    while(!is_correct);
-    from.col = from_text[0] - 'a';
+    } while (!is_correct);
+    from.col = 7-(from_text[0] - 'a');
     from.row = from_text[1] - '1';
 
     return from;
@@ -43,4 +42,3 @@ Move Console_input::get_move()
     res.to = m_to;
     return res;
 }
-

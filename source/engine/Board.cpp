@@ -75,7 +75,6 @@ bool checkCoord(int i)
 void Board::move_piece(Move move)
 {
 
-
     chessboard[move.to.row][move.to.col].p.type = get(move.from).p.type; // Move figure into "to" field
     chessboard[move.to.row][move.to.col].p.colour = get(move.from).p.colour;
     chessboard[move.to.row][move.to.col].occupied = true;
@@ -123,11 +122,11 @@ bool Board::make_move(Move move) // + check if legal
         is_move_legal = check_queen_move(move.from, move.to);
         break;
     case Piece_type::King:
-        kings_move = check_king_move(move.from,move.to);
+        kings_move = check_king_move(move.from, move.to);
         is_move_legal = std::get<0>(kings_move);
         break;
     case Piece_type::Pawn:
-        is_move_legal = check_pawn_move(move.from,move.to);
+        is_move_legal = check_pawn_move(move.from, move.to);
         break;
     default:
         is_move_legal = false;
@@ -136,9 +135,6 @@ bool Board::make_move(Move move) // + check if legal
     {
         return false;
     }
-
-
-
 
     if (get(to).p.type == Piece_type::King) // Check if King was attacked
     {
@@ -161,7 +157,6 @@ bool Board::make_move(Move move) // + check if legal
         // chessboard[rook_move.to.row][rook_move.to.col].occupied = true;
 
         move_piece(rook_move);
-
     }
 
     if (get(from).p.type == Piece_type::Pawn && (get(to).f.row == 0 || get(to).f.row == 7))
@@ -171,7 +166,6 @@ bool Board::make_move(Move move) // + check if legal
     // Empty "From" field, replace piece in "To" field
     // Add move to moves, consider castling and pawn promotion (change piece type)
     // Check whether King was attacked, end game if yes
-
 
     // chessboard[move.from.row][move.from.col].p.type = Piece_type::None; // Empty from field
     // chessboard[move.from.row][move.from.col].occupied = false;
@@ -346,11 +340,11 @@ bool Board::check_pawn_move(Field from, Field to)
         base_move_increment = -1;
     }
 
-    if (!get(to).occupied && to.row == from.row + base_move_increment)
+    if (!get(to).occupied && to.row == from.row + base_move_increment && to.col == from.col)
     {
         return true;
     }
-    if (get(to).occupied && to.row == from.row + base_move_increment && (to.col == (from.col + 1) || to.col == (from.col - 1)))
+    if (get(to).occupied && to.row == from.row + base_move_increment && (to.col == (from.col + 1) || to.col == (from.col - 1))) // capturing
     {
         return true;
     }
@@ -364,7 +358,7 @@ bool Board::check_pawn_move(Field from, Field to)
             break;
         }
     }
-    if (!has_moved && to.row == from.row + 2 * base_move_increment && to.col == from.col) // double move
+    if (!has_moved && to.row == from.row + 2 * base_move_increment && to.col == from.col && !get(to).occupied /*Check whether field inbetween is occupied*/) // double move
     {
         return true;
     }
@@ -379,6 +373,9 @@ bool Board::check_pawn_move(Field from, Field to)
     {
         if (from.row == prev_move_to.row && abs(from.col - prev_move_to.col) == 1 && to.row == from.row + base_move_increment && to.col == prev_move_to.col) // en passaint capture
         {
+            get(prev_move_to).p.type = Piece_type::None; // Delete pawn captured by en passaint
+            get(prev_move_to).p.colour = Colour::Empty;
+            get(prev_move_to).occupied = false;
             return true;
         }
     }
