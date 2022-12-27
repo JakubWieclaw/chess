@@ -358,7 +358,10 @@ bool Board::check_pawn_move(Field from, Field to)
             break;
         }
     }
-    if (!has_moved && to.row == from.row + 2 * base_move_increment && to.col == from.col && !get(to).occupied /*Check whether field inbetween is occupied*/) // double move
+    Field inbetween;
+    inbetween.row = from.row+1;
+    inbetween.col = from.col;
+    if (!has_moved && to.row == from.row + 2 * base_move_increment && to.col == from.col && !get(to).occupied && !get(inbetween).occupied /*Check whether field inbetween is occupied*/) // double move
     {
         return true;
     }
