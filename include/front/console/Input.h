@@ -5,7 +5,7 @@
 class Input
 {
     public:
-    Move get_move();
+    virtual Move get_move() = 0;
     private:
 
 };

@@ -11,6 +11,11 @@
 //     Console_input input;
 // };
 
+Console_front console_front(Input &input):input(input)
+{
+
+}
+
 void Console_front::start_game(Board &board)
 {
     while (board.game_result() == Game_state::in_progress)
