@@ -8,6 +8,8 @@
 class File_input: public Input
 {
     public:
-    Move get_move(std::ifstream &f);
+    File_input(std::istream &f);
+    Move get_move();
     private:
+    std::istream &f;
 };

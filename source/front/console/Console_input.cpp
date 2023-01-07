@@ -43,8 +43,8 @@ Field insert_move(std::string ft)
 
 Move Console_input::get_move()
 {
-    Field m_from = insert_move(f, "From: "); // Defined by from but accurate for both
-    Field m_to = insert_move(f, "To: ");
+    Field m_from = insert_move("From: "); // Defined by from but accurate for both
+    Field m_to = insert_move("To: ");
     Move res;
     res.from = m_from;
     res.to = m_to;

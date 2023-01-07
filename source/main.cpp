@@ -17,19 +17,25 @@ int main()
             std::cout << "Wrong input, try again\n";
         }
     } while (test != "0" && test != "1");
-    Console_input c;
-    File_input f;
+    //std::unique_ptr<Input> input;
+    //File_input f;
     if (test == "0")
     {
+        //input = std::make_unique<Console_input>();
+        Console_input c;
         Console_front front(c);
         front.start_game(board);
     }
     else
     {
-        Console_front front(f);
+        std::string filename;
+        std::cout << "Input filepath: ";
+        std::cin >> filename;
+        std::ifstream file(filename);
+        File_input file_input(file);
+        Console_front front(file_input);
         front.start_game(board);
     }
-
 
     return 0;
 }

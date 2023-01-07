@@ -11,7 +11,7 @@
 //     Console_input input;
 // };
 
-Console_front console_front(Input &input):input(input)
+Console_front::Console_front(Input &input):input(input)
 {
 
 }

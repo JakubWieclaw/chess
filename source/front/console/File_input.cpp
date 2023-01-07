@@ -3,6 +3,11 @@
 #include <iostream>
 #include <stdexcept>
 
+File_input::File_input(std::istream &f) : f(f)
+{
+
+}
+
 Field insert_move(std::istream &f, std::string ft)
 {
     Field from;
@@ -16,20 +21,23 @@ Field insert_move(std::istream &f, std::string ft)
         if (temp.length() != 2)
         {
             //std::cout << "Wrong string length - insert move again" << std::endl;
-            throw std::invalid_argument( "Wrong move length" );
             is_correct = false;
+            throw std::invalid_argument( "Wrong move length" );
+            
         }
         else if (temp[0] < 'a' || temp[0] > 'h')
         {
             //std::cout << "Lowercase letters from a to h only - insert move again" << std::endl;
-            throw std::invalid_argument( "Wrong letter inserted" );
             is_correct = false;
+            throw std::invalid_argument( "Wrong letter inserted" );
+            
         }
         else if (temp[1] < '1' || temp[1] > '8')
         {
             //std::cout << "Lowercase letters from a to h only - insert move again" << std::endl;
-            throw std::invalid_argument( "Wrong digit inserted" );
             is_correct = false;
+            throw std::invalid_argument( "Wrong digit inserted" );
+            
         }
         else
         {
@@ -43,7 +51,7 @@ Field insert_move(std::istream &f, std::string ft)
     return from;
 }
 
-Move File_input::get_move(std::ifstream &f)
+Move File_input::get_move()
 {
     Field m_from = insert_move(f, "From: "); // Defined by from but accurate for both
     Field m_to = insert_move(f, "To: ");
