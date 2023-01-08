@@ -188,21 +188,47 @@ bool Board::check_rook_move(Field from, Field to)
 {
     if (from.row == to.row)
     {
-        for (int i = from.col + 1; i < to.col; i++)
+        if (to.col > from.col)
         {
-            if (get(from.row, i).occupied)
+            for (int i = from.col + 1; i < to.col; i++)
             {
-                return false;
+                if (get(from.row, i).occupied)
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            for (int i = from.col - 1; i > to.col; i--)
+            {
+                if (get(from.row, i).occupied)
+                {
+                    return false;
+                }
             }
         }
     }
     else if (from.col == to.col)
     {
-        for (int i = from.row + 1; i < to.row; i++)
+        if (to.row > from.row)
         {
-            if (get(i, from.col).occupied)
+            for (int i = from.row + 1; i < to.row; i++)
             {
-                return false;
+                if (get(i, from.col).occupied)
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            for (int i = from.row - 1; i > to.row; i--)
+            {
+                if (get(i, from.col).occupied)
+                {
+                    return false;
+                }
             }
         }
     }
@@ -340,7 +366,7 @@ bool Board::check_pawn_move(Field from, Field to)
         base_move_increment = -1;
     }
 
-    if (!get(to).occupied && to.row == from.row + base_move_increment && to.col == from.col)
+    if (!get(to).occupied && to.row == from.row + base_move_increment && to.col == from.col) // normal move
     {
         return true;
     }

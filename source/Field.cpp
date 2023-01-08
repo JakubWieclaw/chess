@@ -2,5 +2,5 @@
 
 bool Field::operator==(Field f) const 
 {
-    return row == f.row && col == f.row;
+    return row == f.row && col == f.col;
 }

@@ -20,7 +20,7 @@ void Console_drawer::draw_state(std::array<std::array<Field_info,8>,8> game_stat
         std::cout << "White move\n";
     }
     SetConsoleTextAttribute(console, 15); // 15 - white
-    std::cout << "\n abcdefgh\n";
+    std::cout << "\n a b c d e f g h\n";
     for (int i = 7; i >= 0; i--)
     {
         SetConsoleTextAttribute(console, 15); // 15 - white
@@ -62,7 +62,7 @@ void Console_drawer::draw_state(std::array<std::array<Field_info,8>,8> game_stat
                 }
             }
             SetConsoleTextAttribute(console, colour);
-            std::cout << piece;
+            std::cout << piece << " ";
         }
         std::cout << std::endl;
     }
