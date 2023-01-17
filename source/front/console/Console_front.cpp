@@ -33,4 +33,5 @@ void Console_front::start_game(Board &board)
         
     }
     std::cout << "Game finished" << std::endl;
+    getchar();
 }

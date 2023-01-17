@@ -2,7 +2,7 @@
 #include <fstream>
 #include <tuple>
 
-Colour Board::colour_turn() // Whose turn is it - dumb, don't you think?
+Colour Board::colour_turn() // Whose turn is it
 {
     return history.get_size() % 2 == 0 ? Colour::White : Colour::Black;
 }
@@ -301,7 +301,7 @@ std::tuple<bool, bool, Move> Board::check_king_move(Field from, Field to) // 0 -
         return {false, false, Move()};
     }
     int starting_row = colour_turn() == Colour::White ? 0 : 7; // Castling
-    Field starting_king_field = {starting_row, 4};
+    Field starting_king_field = {starting_row, 3};
 
     // for (auto x:history.get_moves()) // Check if king moved before
     // {
@@ -382,7 +382,7 @@ bool Board::check_pawn_move(Field from, Field to)
         {
             has_moved = true;
             break;
-        }
+        }   
     }
     Field inbetween;
     inbetween.row = from.row + base_move_increment;

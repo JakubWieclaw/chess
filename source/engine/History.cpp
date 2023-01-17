@@ -27,7 +27,7 @@ History::History()
 void History::add_move(Move move)
 {
     std::ofstream f(file_name, std::ios_base::app);
-    f << (char)(move.from.col + 'a') << move.from.row + 1 << " " << (char)(move.to.col + 'a') << move.to.row + 1 << std::endl;
+    f << (char)('h' - move.from.col) << move.from.row + 1 << " " << (char)('h' - move.from.col) << move.to.row + 1 << std::endl;
     moves.push_back(move);
 }
 std::vector<Move> History::get_moves()
